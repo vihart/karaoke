@@ -62,7 +62,7 @@ var hatArray = makeBeat(hatProbs);
 var t = 0;
 var measureLength = 1;
 var increment = 0.01
-var fudgeFactor = 0.1;
+var fudgeFactor = 0.03;
 
 /*
 Request animation frame loop function
@@ -73,17 +73,17 @@ function animate() {
   t += increment;
 
   for(var i = 0; i < kickArray.length; i++){
-    if (t%measureLength - kickArray[i] < fudgeFactor){
+    if ((t%measureLength - kickArray[i]) < fudgeFactor){
       kickSound.play();
     }
   }
   for(var i = 0; i < snareArray.length; i++){
-    if (t%measureLength - snareArray[i] < fudgeFactor){
+    if ((t%measureLength - snareArray[i]) < fudgeFactor){
       snareSound.play();
     }
   }
   for(var i = 0; i < hatArray.length; i++){
-    if (t%measureLength - hatArray[i] < fudgeFactor){
+    if ((t%measureLength - hatArray[i]) < fudgeFactor){
       hatSound.play();
     }
   }
