@@ -73,7 +73,7 @@ function animate() {
   t += increment;
 
   for(var i = 0; i < kickArray.length; i++){
-    if (((t%measureLength) - (kickArray[i]*measureLength)) < fudgeFactor){
+    if (Math.abs((t%measureLength) - (kickArray[i]*measureLength)) < fudgeFactor){
       kickSound.play();
     } else {
       // kickSound.pause();
@@ -81,7 +81,7 @@ function animate() {
     }
   }
   for(var i = 0; i < snareArray.length; i++){
-    if (((t%measureLength) - (snareArray[i]*measureLength)) < fudgeFactor){
+    if (Math.abs((t%measureLength) - (snareArray[i]*measureLength)) < fudgeFactor){
       snareSound.play();
     }else{
       // snareSound.pause();
@@ -89,10 +89,10 @@ function animate() {
     }
   }
   for(var i = 0; i < hatArray.length; i++){
-    if (((t%measureLength) - (hatArray[i]*measureLength)) < fudgeFactor){
-      snareSound.play();
+    if (Math.abs((t%measureLength) - (hatArray[i]*measureLength)) < fudgeFactor){
+      hatSound.play();
     }else{
-      // snareSound.pause();
+      // hatSound.pause();
       // hatSound.currentTime = 0;  
     }
   }
