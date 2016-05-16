@@ -73,18 +73,27 @@ function animate() {
   t += increment;
 
   for(var i = 0; i < kickArray.length; i++){
-    if ((t%measureLength - kickArray[i]) < fudgeFactor){
+    if (((t%measureLength) - (kickArray[i]*measureLength)) < fudgeFactor){
       kickSound.play();
+    } else {
+      // kickSound.pause();
+      // kickSound.currentTime = 0;  
     }
   }
   for(var i = 0; i < snareArray.length; i++){
-    if ((t%measureLength - snareArray[i]) < fudgeFactor){
+    if (((t%measureLength) - (snareArray[i]*measureLength)) < fudgeFactor){
       snareSound.play();
+    }else{
+      // snareSound.pause();
+      // snareSound.currentTime = 0;
     }
   }
   for(var i = 0; i < hatArray.length; i++){
-    if ((t%measureLength - hatArray[i]) < fudgeFactor){
-      hatSound.play();
+    if (((t%measureLength) - (hatArray[i]*measureLength)) < fudgeFactor){
+      snareSound.play();
+    }else{
+      // snareSound.pause();
+      // hatSound.currentTime = 0;  
     }
   }
 
