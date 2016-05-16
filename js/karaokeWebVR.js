@@ -52,17 +52,20 @@ scene.add( floor );
 
 //karaoke sound stuff
 var kickSound = document.querySelector('#kick');
+kickSound.volume = 1;
 var snareSound = document.querySelector('#snare');
+snareSound.volume = 0.5;
 var hatSound = document.querySelector('#hat');
+hatSound.volume = 0.5;
 
 var kickArray = makeBeat(kickProbs);
 var snareArray = makeBeat(snareProbs);
 var hatArray = makeBeat(hatProbs);
 
 var t = 0;
-var measureLength = 1;
+var measureLength = 1 + Math.random();
 var increment = 0.01
-var fudgeFactor = 0.03;
+var fudgeFactor = 0.01;
 
 /*
 Request animation frame loop function
