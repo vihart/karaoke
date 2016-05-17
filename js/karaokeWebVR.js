@@ -99,7 +99,7 @@ var measureLength = 1 + Math.random() + Math.random();
 var increment = 0.01;
 var fudgeFactor = 0.01;
 
-var gravity = 0.02; //for cube visuals
+var gravity = 10; //for cube visuals
 
 /*
 Request animation frame loop function
