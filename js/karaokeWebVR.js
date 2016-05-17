@@ -54,17 +54,17 @@ scene.add( floor );
 var kickSound = document.querySelector('#kick');
 kickSound.volume = 1;
 var snareSound = document.querySelector('#snare');
-snareSound.volume = 0.5;
+snareSound.volume = 0.3;
 var hatSound = document.querySelector('#hat');
-hatSound.volume = 0.5;
+hatSound.volume = 0.3;
 
 var kickArray = makeBeat(kickProbs);
 var snareArray = makeBeat(snareProbs);
 var hatArray = makeBeat(hatProbs);
 
 var t = 0;
-var measureLength = 1 + Math.random();
-var increment = 0.01
+var measureLength = 1 + Math.random() + Math.random();
+var increment = 0.01;
 var fudgeFactor = 0.01;
 
 /*
@@ -78,25 +78,16 @@ function animate() {
   for(var i = 0; i < kickArray.length; i++){
     if (Math.abs((t%measureLength) - (kickArray[i]*measureLength)) < fudgeFactor){
       kickSound.play();
-    } else {
-      // kickSound.pause();
-      // kickSound.currentTime = 0;  
     }
   }
   for(var i = 0; i < snareArray.length; i++){
     if (Math.abs((t%measureLength) - (snareArray[i]*measureLength)) < fudgeFactor){
       snareSound.play();
-    }else{
-      // snareSound.pause();
-      // snareSound.currentTime = 0;
     }
   }
   for(var i = 0; i < hatArray.length; i++){
     if (Math.abs((t%measureLength) - (hatArray[i]*measureLength)) < fudgeFactor){
       hatSound.play();
-    }else{
-      // hatSound.pause();
-      // hatSound.currentTime = 0;  
     }
   }
 
