@@ -51,6 +51,31 @@ floor.position.y = -50;
 scene.add( floor );
 
 //karaoke sound stuff
+
+context = new AudioContext;
+oscillator = context.createOscillator();
+oscillator.frequency.value = 200;
+
+oscillator.connect(context.destination);
+
+oscillator.start(0);
+
+//random melody rhythm input, will be from karaoke code instead
+var randomWordNumber = 1 + Math.floor(8*Math.random());
+var randomSyllables = [];
+for(var i = 0; i < 8; i++){
+  var randomWord = Math.floor(randomWordNumber*Math.random);
+  randomSyllables[randomWord] += 1;
+}
+
+//melody for rhythm
+var melodyArray = getRhythmStarts(syllableInput);
+var melodyNotes = [];
+for (var i = 0; i<melodyArray.length; i++){
+  melodyNotes[i] = 200 + 100*Math.random();
+}
+
+//beat
 var kickSound = document.querySelector('#kick');
 kickSound.volume = 1;
 var snareSound = document.querySelector('#snare');
@@ -75,6 +100,14 @@ function animate() {
   //karaoke playing sound stuff
   t += increment;
 
+  //melody:
+  for(var i = 0; i < melodyArray.length; i++){
+    if (Math.abs((t%measureLength) - (melodyArray[i]*measureLength)) < fudgeFactor){
+      oscillator.frequency.value = melodyNotes[i];
+    }
+  }
+
+  //beat:
   for(var i = 0; i < kickArray.length; i++){
     if (Math.abs((t%measureLength) - (kickArray[i]*measureLength)) < fudgeFactor){
       kickSound.play();
@@ -91,6 +124,7 @@ function animate() {
     }
   }
 
+  //non-karaoke stuff:
 
   // Apply any desired changes for the next frame. In this case, we rotate our object.
   dodecahedron.rotation.x += 0.01;

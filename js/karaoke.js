@@ -1,6 +1,44 @@
 var syllableInput = [1,5,1,1]; //number of syllables in each word, example input
 var syllableOutput = getRhythm(syllableInput);
 
+//gives when each note starts
+function getRhythmStarts(syllableArray){//expecting an array of syllable numbers per word from 1 to 8 syllables
+
+  var wordNumber = syllableArray.length; //number of words
+  var totalSyllables = syllableArray.reduce(add, 0); //total number of syllables
+
+  if (totalSyllables > 8 || totalSyllables < 1){
+    return "not the right number of syllables";
+  } else {
+    var noteValues = [];//what we're trying to figure out
+
+    for (var i = 0; i < wordNumber; i++){
+        noteValues[i] = 1/8; //start each word as an eigth note
+    }
+
+  while (noteValues.reduce(add, 0) < 1){ //as long as our measure isn't full yet,
+    for (var i = 0; i < wordNumber; i++){ //for each word,
+      if (noteValues.reduce(add, 0) < 1 && noteValues[i] < syllableArray[i]/totalSyllables){ //make it longer if it's comparatively short
+          noteValues[i] += 1/8;
+      }
+    }
+  }
+
+  noteValues[wordNumber-1] = 1 - noteValues[wordNumber-1];//last note starts at 1-last note time
+  for (var i = (wordNumber-2); i >= 0; i--){
+    noteValues[i] = noteValues[i+1] - noteValues[i];
+  }
+
+    return noteValues;
+  }
+
+  function add(a, b) {
+      return a + b;
+  }
+
+}//end function
+
+//gives how long each note is
 function getRhythm(syllableArray){//expecting an array of syllable numbers per word from 1 to 8 syllables
 
   var wordNumber = syllableArray.length; //number of words
