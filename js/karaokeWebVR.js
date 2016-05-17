@@ -23,31 +23,38 @@ Create, position, and add 3d objects
 */
 var pi = 3.141592653589793238;
 
+
+var light2 = new THREE.PointLight( 0xffffff, 1, 100 );
+light2.intensity = 1;
+scene.add( light2 );
+
 var geometry = new THREE.DodecahedronGeometry(10);
-var material = new THREE.MeshNormalMaterial();
+var material = new THREE.MeshPhongMaterial();
 material.side = THREE.DoubleSide;
 var dodecahedron = new THREE.Mesh( geometry, material );
 dodecahedron.position.z = -20;
 scene.add(dodecahedron);
 
-var tetrahedron = new THREE.Mesh(new THREE.TetrahedronGeometry(10), new THREE.MeshBasicMaterial({color: 0xEE0443, wireframe: true}));
-var tetrahedronIncrement = 0;
-var z = Math.sin(-3/2*pi/1000*tetrahedronIncrement)*40;
-var x = Math.cos(-3/2*pi/1000*tetrahedronIncrement)*40;
-tetrahedron.position.set(x, 0, z);
-scene.add(tetrahedron);
+// var tetrahedron = new THREE.Mesh(new THREE.TetrahedronGeometry(10), new THREE.MeshPhongMaterial({color: 0xEE0443, wireframe: true}));
+// var tetrahedronIncrement = 0;
+// var z = Math.sin(-3/2*pi/1000*tetrahedronIncrement)*40;
+// var x = Math.cos(-3/2*pi/1000*tetrahedronIncrement)*40;
+// tetrahedron.position.set(x, 0, z);
+// scene.add(tetrahedron);
 
 var cubes = [];
-for (var i = 0; i < 10; i++) {
-  cubes[i] = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 10), new THREE.MeshBasicMaterial({color: 0x0443EE}));
-  cubes[i].position.z = i*(-20) + 100;
+for (var i = 0; i < 3; i++) {
+  cubes[i] = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 10), new THREE.MeshPhongMaterial());
+  cubes[i].material.color.setHSL(Math.random(),0.5,0.5);
+  cubes[i].position.z = i*(-20) + 50;
   cubes[i].position.x = i*(-20);
   scene.add(cubes[i]);
 }
 
-var floor = new THREE.Mesh( new THREE.PlaneBufferGeometry( 1000, 1000, 1, 1 ), new THREE.MeshBasicMaterial( { color: 0x404040, side: THREE.DoubleSide } ) );
+var floor = new THREE.Mesh( new THREE.PlaneBufferGeometry( 1000, 1000, 1, 1 ), new THREE.MeshPhongMaterial( { color: 0x404040, side: THREE.DoubleSide } ) );
 floor.rotation.x = pi/2;
 floor.position.y = -50;
+floor.material.color.setHSL(Math.random(),0.5,0.5);
 scene.add( floor );
 
 //karaoke sound stuff
@@ -92,6 +99,8 @@ var measureLength = 1 + Math.random() + Math.random();
 var increment = 0.01;
 var fudgeFactor = 0.01;
 
+var gravity = 0.02; //for cube visuals
+
 /*
 Request animation frame loop function
 */
@@ -104,6 +113,7 @@ function animate() {
   for(var i = 0; i < melodyArray.length; i++){
     if (Math.abs((t%measureLength) - (melodyArray[i]*measureLength)) < fudgeFactor){
       oscillator.frequency.value = melodyNotes[i];
+      dodecahedron.material.color.setHSL(400/melodyNotes[i],0.5,0.5); //change dodec color with melody
     }
   }
 
@@ -111,17 +121,25 @@ function animate() {
   for(var i = 0; i < kickArray.length; i++){
     if (Math.abs((t%measureLength) - (kickArray[i]*measureLength)) < fudgeFactor){
       kickSound.play();
+      cubes[0].position.y = 1;//pop cube back up
     }
   }
   for(var i = 0; i < snareArray.length; i++){
     if (Math.abs((t%measureLength) - (snareArray[i]*measureLength)) < fudgeFactor){
       snareSound.play();
+      cubes[1].position.y = 1;//pop cube back up
     }
   }
   for(var i = 0; i < hatArray.length; i++){
     if (Math.abs((t%measureLength) - (hatArray[i]*measureLength)) < fudgeFactor){
       hatSound.play();
+      cubes[2].position.y = 1;//pop cube back up
     }
+  }
+
+  //make popped cubes go back down:
+  for(var i = 0; i < 3; i++){
+    cubes[i].position.y -= gravity;
   }
 
   //non-karaoke stuff:
@@ -130,14 +148,14 @@ function animate() {
   dodecahedron.rotation.x += 0.01;
   dodecahedron.rotation.y += 0.005;
 
-  tetrahedron.rotation.x += 0.01;
-  tetrahedronIncrement++;
-  if (tetrahedronIncrement >= 1000) {
-    tetrahedronIncrement = 0;
-  }
-  var z = Math.sin(-2*pi/1000*tetrahedronIncrement)*40;
-  var x = Math.cos(-2*pi/1000*tetrahedronIncrement)*40;
-  tetrahedron.position.set(x, 0, z);
+  // tetrahedron.rotation.x += 0.01;
+  // tetrahedronIncrement++;
+  // if (tetrahedronIncrement >= 1000) {
+  //   tetrahedronIncrement = 0;
+  // }
+  // var z = Math.sin(-2*pi/1000*tetrahedronIncrement)*80;
+  // var x = Math.cos(-2*pi/1000*tetrahedronIncrement)*80;
+  // tetrahedron.position.set(x, 0, z);
 
   //Update VR headset position and apply to camera.
   controls.update();
